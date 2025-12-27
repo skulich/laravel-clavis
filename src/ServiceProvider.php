@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace SKulich\LaravelClavis;
 
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
+use SKulich\LaravelClavis\Console\ClavisKeyCommand;
 
 final class ServiceProvider extends BaseServiceProvider
 {
     public function boot(): void
     {
         if ($this->app->runningInConsole()) {
-            // $this->commands([ClavisKeyCommand::class]);
+            $this->commands([ClavisKeyCommand::class]);
         }
 
         $this->publishes([__DIR__.'/../config/clavis.php' => config_path('clavis.php')], ['clavis']);
