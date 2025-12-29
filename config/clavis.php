@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'key' => env('CLAVIS_KEY'),
+    'hash' => env('CLAVIS_HASH'),
 ];

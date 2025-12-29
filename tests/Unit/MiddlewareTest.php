@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Config;
 
-it('blocks request without api key', function () {
+it('blocks request without api token', function () {
     $response = $this->getJson('/api/test');
 
     $response
@@ -10,30 +10,30 @@ it('blocks request without api key', function () {
         ->assertJson(['message' => 'Unauthenticated.']);
 });
 
-it('blocks when master key is null', function () {
-    Config::set('clavis.key');
+it('blocks when hash is null', function () {
+    Config::set('clavis.hash');
 
-    $response = $this->withToken('any-key')->getJson('/api/test');
-
-    $response
-        ->assertStatus(401)
-        ->assertJson(['message' => 'Unauthenticated.']);
-});
-
-it('blocks request with invalid api key', function () {
-    Config::set('clavis.key', base64_encode(Hash::make('valid-key')));
-
-    $response = $this->withToken('invalid-key')->getJson('/api/test');
+    $response = $this->withToken('any-token')->getJson('/api/test');
 
     $response
         ->assertStatus(401)
         ->assertJson(['message' => 'Unauthenticated.']);
 });
 
-it('allows request with valid api key', function () {
-    Config::set('clavis.key', base64_encode(Hash::make('valid-key')));
+it('blocks request with invalid api token', function () {
+    Config::set('clavis.hash', base64_encode(Hash::make('valid-token')));
 
-    $response = $this->withToken('valid-key')->getJson('/api/test');
+    $response = $this->withToken('invalid-token')->getJson('/api/test');
+
+    $response
+        ->assertStatus(401)
+        ->assertJson(['message' => 'Unauthenticated.']);
+});
+
+it('allows request with valid api token', function () {
+    Config::set('clavis.hash', base64_encode(Hash::make('valid-token')));
+
+    $response = $this->withToken('valid-token')->getJson('/api/test');
 
     $response
         ->assertStatus(200)

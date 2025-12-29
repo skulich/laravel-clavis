@@ -21,7 +21,7 @@ final class Clavis
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $key = config('clavis.key');
+        $key = config('clavis.hash');
         $hash = is_string($key) ? base64_decode($key) : null;
         $token = $request->bearerToken();
 

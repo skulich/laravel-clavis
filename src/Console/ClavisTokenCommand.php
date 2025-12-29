@@ -10,36 +10,37 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
-final class ClavisKeyCommand extends Command
+final class ClavisTokenCommand extends Command
 {
     use ConfirmableTrait;
 
     /**
      * @var string
      */
-    protected $signature = 'clavis:key
+    protected $signature = 'clavis:token
                             {--force : Force the operation to run when in production}';
 
     /**
      * @var string
      */
-    protected $description = 'Generates Clavis key';
+    protected $description = 'Generates Clavis token';
 
     public function handle(): int
     {
-        $key = $this->generateRandomKey();
+        $token = $this->generateToken();
+        $hash = $this->hashToken($token);
 
-        if (! $this->setKeyInEnvironmentFile($key)) {
-            $this->error('Unable to set clavis key.');
+        if (! $this->setHashInEnvironmentFile($hash)) {
+            $this->error('Unable to set clavis token.');
 
             return Command::FAILURE;
         }
 
-        config(['clavis.key' => $key]);
+        config(['clavis.hash' => $hash]);
 
-        $this->info('Clavis key set successfully.');
+        $this->info('Clavis token hash set successfully.');
 
-        $this->info($key);
+        $this->comment('Token: '.$token);
 
         return Command::SUCCESS;
     }
@@ -47,42 +48,54 @@ final class ClavisKeyCommand extends Command
     /**
      * @return non-empty-string
      */
-    protected function generateRandomKey(): string
+    protected function generateToken(): string
     {
         /** @var non-empty-string $key */
-        $key = base64_encode(Hash::make(Str::random(42)));
+        $key = Str::random(32);
 
         return $key;
     }
 
     /**
      * @param  non-empty-string  $key
+     * @return non-empty-string
      */
-    protected function setKeyInEnvironmentFile(string $key): bool
+    protected function hashToken(string $key): string
+    {
+        /** @var non-empty-string $key */
+        $key = base64_encode(Hash::make($key));
+
+        return $key;
+    }
+
+    /**
+     * @param  non-empty-string  $hash
+     */
+    protected function setHashInEnvironmentFile(string $hash): bool
     {
         if (! $this->confirmToProceed(callback: fn () => app()->environment(['testing', 'production']))) {
             return false;
         }
 
-        return $this->writeNewEnvironmentFileWith($key);
+        return $this->writeNewEnvironmentFileWith($hash);
     }
 
     /**
-     * @param  non-empty-string  $key
+     * @param  non-empty-string  $hash
      */
-    protected function writeNewEnvironmentFileWith(string $key): bool
+    protected function writeNewEnvironmentFileWith(string $hash): bool
     {
         $input = File::get(app()->environmentFilePath());
 
         $pattern = $this->keyReplacementPattern();
-        $replacement = 'CLAVIS_KEY='.$key;
+        $replacement = 'CLAVIS_HASH='.$hash;
 
         if (! is_null($pattern) && preg_match($pattern, $input)) {
             $replaced = preg_replace($pattern, $replacement, $input);
 
             // @codeCoverageIgnoreStart
             if ($replaced === $input || $replaced === null) {
-                $this->error('Unable to set Clavis key.');
+                $this->error('Unable to set Clavis hash.');
 
                 return false;
             }
@@ -101,7 +114,7 @@ final class ClavisKeyCommand extends Command
      */
     protected function keyReplacementPattern(): ?string
     {
-        $key = config('clavis.key');
+        $key = config('clavis.hash');
 
         if (! is_string($key)) {
             return null;
@@ -109,6 +122,6 @@ final class ClavisKeyCommand extends Command
 
         $escaped = preg_quote('='.$key, '/');
 
-        return "/^CLAVIS_KEY{$escaped}/m";
+        return "/^CLAVIS_HASH{$escaped}/m";
     }
 }

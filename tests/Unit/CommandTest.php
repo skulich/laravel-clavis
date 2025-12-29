@@ -1,45 +1,45 @@
 <?php
 
-use SKulich\LaravelClavis\Console\ClavisKeyCommand;
+use SKulich\LaravelClavis\Console\ClavisTokenCommand;
 
 it('succeeds with confirmation', function () {
-    $this->artisan(ClavisKeyCommand::class)
+    $this->artisan(ClavisTokenCommand::class)
         ->expectsConfirmation('Are you sure you want to run this command?', 'yes')
         ->assertSuccessful();
 });
 
 it('fails without confirmation', function () {
-    Config::set('clavis.key', 'any-key');
-    $this->artisan(ClavisKeyCommand::class)
+    Config::set('clavis.hash', 'any-token');
+    $this->artisan(ClavisTokenCommand::class)
         ->expectsConfirmation('Are you sure you want to run this command?', 'no')
         ->assertFailed();
 });
 
-it('generates clavis key', function () {
+it('generates clavis token', function () {
     // First Arrange
-    $zeroKey = config('clavis.key');
+    $zeroHash = config('clavis.hash');
 
     // First Assert
-    expect($zeroKey)->toBeNull();
+    expect($zeroHash)->toBeNull();
 
     // First Act
-    $this->artisan(ClavisKeyCommand::class, ['--force' => true])
+    $this->artisan(ClavisTokenCommand::class, ['--force' => true])
         ->assertSuccessful();
 
     // First Arrange
-    $firstKey = config('clavis.key');
+    $firstHash = config('clavis.hash');
 
     // First Assert
-    expect($firstKey)->not->toBeNull();
+    expect($firstHash)->not->toBeNull();
 
     // Second Act
-    $this->artisan(ClavisKeyCommand::class, ['--force' => true])
+    $this->artisan(ClavisTokenCommand::class, ['--force' => true])
         ->assertSuccessful();
 
     // Second Arrange
-    $secondKey = config('clavis.key');
+    $secondHash = config('clavis.hash');
 
     // Second Assert
-    expect($secondKey)->not->toBeNull()
-        ->and($secondKey)->not->toBe($firstKey);
+    expect($secondHash)->not->toBeNull()
+        ->and($secondHash)->not->toBe($firstHash);
 });
