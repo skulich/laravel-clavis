@@ -1,11 +1,12 @@
 {
   "name": "skulich/laravel-clavis",
-  "description": "Laravel Clavis is a simple token-based authentication middleware for Laravel APIs.",
+  "description": "is a lightweight token-based authentication middleware package for Laravel APIs",
   "keywords": [
     "laravel",
     "api",
     "auth",
-    "token"
+    "token",
+    "middleware"
   ],
   "type": "library",
   "license": "MIT",
