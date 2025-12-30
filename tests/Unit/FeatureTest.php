@@ -10,11 +10,11 @@ it('generates a token via CLI and successfully authenticates API requests', func
     $this->artisan(ClavisTokenCommand::class, ['--force' => true])
         ->assertSuccessful();
 
+    Str::createRandomStringsNormally();
+
     $response = $this->withToken($token)->getJson('/api/test');
 
     $response
         ->assertStatus(200)
         ->assertJson(['success' => true]);
-
-    Str::createRandomStringsNormally();
 });
