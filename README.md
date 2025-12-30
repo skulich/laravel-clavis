@@ -25,8 +25,7 @@ without the overhead of Sanctum.
 * [Installation](#installation)
 * [Usage](#usage)
     * [CLI Command](#cli-command)
-    * [API Routes](#api-routes)
-* [User Model Binding](#user-model-binding)
+    * [API Middleware](#api-middleware)
 * [Tests](#tests)
 * [Changelog](#changelog)
 * [Contributing](#contributing)
@@ -50,7 +49,7 @@ Create a new API token via CLI.
 php artisan clavis:token
 ```
 
-## API Routes
+## API Middleware
 
 Add the `clavis` middleware to your API routes.
 
