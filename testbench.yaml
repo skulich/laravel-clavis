@@ -1,1 +1,4 @@
 laravel: '@testbench'
+
+workbench:
+  install: true
