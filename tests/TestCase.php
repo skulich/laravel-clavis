@@ -17,7 +17,7 @@ abstract class TestCase extends BaseTestCase
     protected function getEnvironmentSetUp($app): void
     {
         $this->env = '.env.'.Str::random(32);
-        copy(base_path('.env'), $this->tmp.DIRECTORY_SEPARATOR.$this->env);
+        copy(base_path('.env.example'), $this->tmp.DIRECTORY_SEPARATOR.$this->env);
 
         $app->useEnvironmentPath($this->tmp);
         $app->loadEnvironmentFrom($this->env);
