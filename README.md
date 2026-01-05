@@ -60,10 +60,14 @@ Route::get('/test', function (Request $request) {
 })->middleware('clavis');
 
 // Per Group
-
 Route::middleware('clavis')->group(function () {
     // Route:: ...
 });
+
+// Globally in app/bootstrap/app.php
+->withMiddleware(function (Middleware $middleware): void {
+    $middleware->appendToGroup('api', 'clavis');
+})
 ```
 
 ## Tests
