@@ -5,8 +5,8 @@ namespace SKulich\LaravelClavis\Tests;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 use Orchestra\Testbench\TestCase as BaseTestCase;
+use SKulich\LaravelClavis\ClavisServiceProvider;
 use SKulich\LaravelClavis\Http\Middleware\Clavis;
-use SKulich\LaravelClavis\ServiceProvider;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -35,7 +35,7 @@ abstract class TestCase extends BaseTestCase
     protected function getPackageProviders($app): array
     {
         return [
-            ServiceProvider::class,
+            ClavisServiceProvider::class,
         ];
     }
 

@@ -9,7 +9,7 @@ use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 use SKulich\LaravelClavis\Console\ClavisTokenCommand;
 use SKulich\LaravelClavis\Http\Middleware\Clavis;
 
-final class ServiceProvider extends BaseServiceProvider
+final class ClavisServiceProvider extends BaseServiceProvider
 {
     public function boot(Router $router): void
     {
