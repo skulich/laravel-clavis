@@ -60,7 +60,7 @@
   "extra": {
     "laravel": {
       "providers": [
-        "ClavisServiceProvider"
+        "SKulich\\LaravelClavis\\ClavisServiceProvider"
       ]
     }
   },
