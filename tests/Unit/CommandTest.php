@@ -16,13 +16,13 @@ it('fails without confirmation', function (): void {
 });
 
 it('generates clavis token', function (): void {
-    // First Arrange
+    // Zero Arrange
     $zeroHash = config('clavis.hash');
 
-    // First Assert
+    // Zero Assert
     expect($zeroHash)->toBeNull();
 
-    // First Act
+    // Zero Act
     $this->artisan(ClavisTokenCommand::class, ['--force' => true])
         ->assertSuccessful();
 
