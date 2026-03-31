@@ -9,12 +9,12 @@ return RectorConfig::configure()
         __DIR__.'/src',
         __DIR__.'/tests',
     ])
+    ->withPhpSets()
     ->withPreparedSets(
         deadCode: true,
         codeQuality: true,
-        // typeDeclarations: true,
-        // privatization: true,
-        // earlyReturn: true,
-        // strictBooleans: true,
-    ); /*->withPhpSets(php83: true)
-    ->withTypeCoverageLevel(0)*/
+        typeDeclarations: true,
+        privatization: true,
+        earlyReturn: true,
+        codingStyle: true,
+    );
