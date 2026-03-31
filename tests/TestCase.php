@@ -41,12 +41,8 @@ abstract class TestCase extends BaseTestCase
 
     protected function defineRoutes($router): void
     {
-        Route::get('/api/test', function () {
-            return response()->json(['success' => true]);
-        })->middleware(Clavis::class);
+        Route::get('/api/test', fn() => response()->json(['success' => true]))->middleware(Clavis::class);
 
-        Route::get('/api/test-alias', function () {
-            return response()->json(['success' => true]);
-        })->middleware('clavis');
+        Route::get('/api/test-alias', fn() => response()->json(['success' => true]))->middleware('clavis');
     }
 }
