@@ -2,20 +2,20 @@
 
 use SKulich\LaravelClavis\Console\ClavisTokenCommand;
 
-it('succeeds with confirmation', function () {
+it('succeeds with confirmation', function (): void {
     $this->artisan(ClavisTokenCommand::class)
         ->expectsConfirmation('Are you sure you want to run this command?', 'yes')
         ->assertSuccessful();
 });
 
-it('fails without confirmation', function () {
+it('fails without confirmation', function (): void {
     Config::set('clavis.hash', 'any-token');
     $this->artisan(ClavisTokenCommand::class)
         ->expectsConfirmation('Are you sure you want to run this command?', 'no')
         ->assertFailed();
 });
 
-it('generates clavis token', function () {
+it('generates clavis token', function (): void {
     // First Arrange
     $zeroHash = config('clavis.hash');
 

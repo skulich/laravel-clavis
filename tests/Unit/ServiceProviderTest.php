@@ -2,7 +2,7 @@
 
 use SKulich\LaravelClavis\Http\Middleware\Clavis;
 
-it('publishes config file', function () {
+it('publishes config file', function (): void {
     $this->artisan('vendor:publish', ['--tag' => 'clavis'])
         ->assertSuccessful();
 
@@ -11,7 +11,7 @@ it('publishes config file', function () {
     unlink(config_path('clavis.php'));
 });
 
-it('registers clavis middleware', function () {
+it('registers clavis middleware', function (): void {
     $this->assertEquals(
         Clavis::class,
         app('router')->getMiddleware()['clavis'] ?? null

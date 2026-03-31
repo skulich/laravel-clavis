@@ -2,7 +2,7 @@
 
 use SKulich\LaravelClavis\Console\ClavisTokenCommand;
 
-it('generates a token via CLI and successfully authenticates API requests', function () {
+it('generates a token via CLI and successfully authenticates API requests', function (): void {
     $token = Str::random(32);
 
     Str::createRandomStringsUsing(fn () => $token);
