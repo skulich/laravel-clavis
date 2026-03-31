@@ -27,6 +27,7 @@ without the overhead of Sanctum.
     * [Generate Token](#generate-token)
     * [Rotate Token](#rotate-token)
     * [API Middleware](#api-middleware)
+* [Failed Auth Events](#failed-auth-events)
 * [Nota Bene](#nota-bene)
 * [Tests](#tests)
 * [Changelog](#changelog)
@@ -80,6 +81,18 @@ Route::middleware('clavis')->group(function () {
 ->withMiddleware(function (Middleware $middleware): void {
     $middleware->appendToGroup('api', 'clavis');
 })
+```
+
+## Failed Auth Events
+
+Failed authentication attempts dispatch `Illuminate\Auth\Events\Failed` with guard `clavis` and a masked token.
+
+```php
+Event::listen(Failed::class, function (Failed $event) {
+    if ($event->guard === 'clavis') {
+        Log::warning('Clavis: unauthorized request', $event->credentials);
+    }
+});
 ```
 
 ## Nota Bene
