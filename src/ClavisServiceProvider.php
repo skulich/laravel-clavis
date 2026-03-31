@@ -22,6 +22,7 @@ final class ClavisServiceProvider extends BaseServiceProvider
         $router->aliasMiddleware('clavis', Clavis::class);
     }
 
+    #[\Override]
     public function register(): void
     {
         $this->mergeConfigFrom(__DIR__.'/../config/clavis.php', 'clavis');
