@@ -48,7 +48,7 @@ final class ClavisTokenCommand extends Command
     /**
      * @return non-empty-string
      */
-    protected function generateToken(): string
+    private function generateToken(): string
     {
         /** @var non-empty-string $key */
         $key = Str::random(32);
@@ -60,7 +60,7 @@ final class ClavisTokenCommand extends Command
      * @param  non-empty-string  $key
      * @return non-empty-string
      */
-    protected function hashToken(string $key): string
+    private function hashToken(string $key): string
     {
         /** @var non-empty-string $key */
         $key = base64_encode(Hash::make($key));
@@ -71,7 +71,7 @@ final class ClavisTokenCommand extends Command
     /**
      * @param  non-empty-string  $hash
      */
-    protected function setHashInEnvironmentFile(string $hash): bool
+    private function setHashInEnvironmentFile(string $hash): bool
     {
         if (! $this->confirmToProceed(callback: fn () => app()->environment(['testing', 'production']))) {
             return false;
@@ -83,7 +83,7 @@ final class ClavisTokenCommand extends Command
     /**
      * @param  non-empty-string  $hash
      */
-    protected function writeNewEnvironmentFileWith(string $hash): bool
+    private function writeNewEnvironmentFileWith(string $hash): bool
     {
         $input = File::get(app()->environmentFilePath());
 
@@ -99,6 +99,7 @@ final class ClavisTokenCommand extends Command
 
                 return false;
             }
+
             // @codeCoverageIgnoreEnd
         } else {
             $replaced = $input.PHP_EOL.$replacement;
@@ -112,7 +113,7 @@ final class ClavisTokenCommand extends Command
     /**
      * @return non-empty-string|null
      */
-    protected function keyReplacementPattern(): ?string
+    private function keyReplacementPattern(): ?string
     {
         $key = config('clavis.hash');
 
@@ -122,6 +123,6 @@ final class ClavisTokenCommand extends Command
 
         $escaped = preg_quote('='.$key, '/');
 
-        return "/^CLAVIS_HASH{$escaped}/m";
+        return sprintf('/^CLAVIS_HASH%s/m', $escaped);
     }
 }
