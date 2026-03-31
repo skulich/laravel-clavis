@@ -24,7 +24,8 @@ without the overhead of Sanctum.
 
 * [Installation](#installation)
 * [Usage](#usage)
-    * [CLI Command](#cli-command)
+    * [Generate Token](#generate-token)
+    * [Rotate Token](#rotate-token)
     * [API Middleware](#api-middleware)
 * [Nota Bene](#nota-bene)
 * [Tests](#tests)
@@ -42,15 +43,23 @@ composer require skulich/laravel-clavis
 
 ## Usage
 
-## CLI Command
+## Generate Token
 
-Create a new API token via CLI.
+Generate a new API token via CLI.
+
+> The generated token is shown only once. Store it securely and share it over a safe channel.
 
 ```shell
 php artisan clavis:token
 ```
 
-> The generated token is shown only once. Store it securely and share it over a safe channel.
+## Rotate Token
+
+Run the same command to rotate the token. The old token will stop working immediately after regeneration.
+
+```shell
+php artisan clavis:token
+```
 
 ## API Middleware
 
