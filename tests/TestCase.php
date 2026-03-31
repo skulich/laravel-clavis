@@ -44,5 +44,9 @@ abstract class TestCase extends BaseTestCase
         Route::get('/api/test', function () {
             return response()->json(['success' => true]);
         })->middleware(Clavis::class);
+
+        Route::get('/api/test-alias', function () {
+            return response()->json(['success' => true]);
+        })->middleware('clavis');
     }
 }

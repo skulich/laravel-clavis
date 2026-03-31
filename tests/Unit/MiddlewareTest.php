@@ -59,3 +59,13 @@ it('allows request with valid api token', function () {
         ->assertStatus(200)
         ->assertJson(['success' => true]);
 });
+
+it('works via string alias "clavis"', function () {
+    Config::set('clavis.hash', base64_encode(Hash::make('valid-token')));
+
+    $response = $this->withToken('valid-token')->getJson('/api/test-alias');
+
+    $response
+        ->assertStatus(200)
+        ->assertJson(['success' => true]);
+});
