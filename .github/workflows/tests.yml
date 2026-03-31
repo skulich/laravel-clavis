@@ -23,7 +23,7 @@ jobs:
       fail-fast: false
       matrix:
         php: [ 8.3, 8.4, 8.5 ]
-        laravel: [ 12.* ]
+        laravel: [ 12.*, 13.* ]
         stability: [ prefer-dist ]
 
     name: PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }} - ${{ matrix.stability }}
@@ -50,7 +50,9 @@ jobs:
             ${{ runner.os }}-php-${{ matrix.php }}-laravel-${{ matrix.laravel }}-
 
       - name: Install dependencies
-        run: composer install --${{ matrix.stability }} --no-interaction --no-progress
+        run: |
+          composer require "laravel/framework:${{ matrix.laravel }}" --no-update --no-interaction
+          composer install --${{ matrix.stability }} --no-interaction --no-progress
 
       - name: Run Tests
         run: composer test
