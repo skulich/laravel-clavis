@@ -22,7 +22,7 @@ final class Clavis
     public function handle(Request $request, Closure $next): Response
     {
         $key = config('clavis.hash');
-        $hash = is_string($key) ? base64_decode($key) : null;
+        $hash = is_string($key) ? (base64_decode($key, true) ?: null) : null;
         $token = $request->bearerToken();
 
         if (is_null($hash) || is_null($token) || ! Hash::check($token, $hash)) {

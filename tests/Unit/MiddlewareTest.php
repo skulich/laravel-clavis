@@ -10,8 +10,28 @@ it('blocks request without api token', function () {
         ->assertJson(['message' => 'Unauthenticated.']);
 });
 
-it('blocks when hash is null', function () {
+it('blocks request when hash is null', function () {
     Config::set('clavis.hash');
+
+    $response = $this->withToken('any-token')->getJson('/api/test');
+
+    $response
+        ->assertStatus(401)
+        ->assertJson(['message' => 'Unauthenticated.']);
+});
+
+it('blocks request when hash is empty string', function () {
+    Config::set('clavis.hash', '');
+
+    $response = $this->withToken('any-token')->getJson('/api/test');
+
+    $response
+        ->assertStatus(401)
+        ->assertJson(['message' => 'Unauthenticated.']);
+});
+
+it('blocks request when hash is invalid base64 string', function () {
+    Config::set('clavis.hash', 'not-valid-base64!!!');
 
     $response = $this->withToken('any-token')->getJson('/api/test');
 
