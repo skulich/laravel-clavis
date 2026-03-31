@@ -67,10 +67,8 @@ it('dispatches Failed event with null token when no bearer provided', function (
 
     $this->getJson('/api/test');
 
-    Event::assertDispatched(Failed::class, function (Failed $event): bool {
-        return $event->guard === 'clavis'
-               && $event->credentials['token'] === null;
-    });
+    Event::assertDispatched(Failed::class, fn (Failed $event): bool => $event->guard === 'clavis'
+           && $event->credentials['token'] === null);
 });
 
 it('dispatches Failed event with masked token on invalid attempt', function (): void {
@@ -80,10 +78,8 @@ it('dispatches Failed event with masked token on invalid attempt', function (): 
 
     $this->withToken('invalid-token')->getJson('/api/test');
 
-    Event::assertDispatched(Failed::class, function (Failed $event): bool {
-        return $event->guard === 'clavis'
-               && $event->credentials['token'] === '*********oken';
-    });
+    Event::assertDispatched(Failed::class, fn (Failed $event): bool => $event->guard === 'clavis'
+           && $event->credentials['token'] === '*********oken');
 });
 
 it('works via string alias "clavis"', function (): void {
