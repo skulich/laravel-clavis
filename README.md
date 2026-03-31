@@ -26,6 +26,7 @@ without the overhead of Sanctum.
 * [Usage](#usage)
     * [CLI Command](#cli-command)
     * [API Middleware](#api-middleware)
+* [Nota Bene](#nota-bene)
 * [Tests](#tests)
 * [Changelog](#changelog)
 * [Contributing](#contributing)
@@ -49,6 +50,8 @@ Create a new API token via CLI.
 php artisan clavis:token
 ```
 
+> The generated token is shown only once. Store it securely and share it over a safe channel.
+
 ## API Middleware
 
 Add the `clavis` middleware to your API routes.
@@ -69,6 +72,11 @@ Route::middleware('clavis')->group(function () {
     $middleware->appendToGroup('api', 'clavis');
 })
 ```
+
+## Nota Bene
+
+- `CLAVIS_HASH` is a secret, treat it like `APP_KEY` — never commit it to version control.
+- For internet-facing endpoints, apply Laravel's `throttle` middleware alongside `clavis` to mitigate brute-force attacks.
 
 ## Tests
 
