@@ -98,6 +98,7 @@ Event::listen(Failed::class, function (Failed $event) {
 ## Nota Bene
 
 - `CLAVIS_HASH` is a secret, treat it like `APP_KEY` — never commit it to version control.
+- Rotating `APP_KEY` does not invalidate `CLAVIS_HASH`. Tokens are verified with bcrypt (`Hash::check`), which is independent of `APP_KEY`, unlike Laravel's `Crypt`/`encrypt()`.
 - For internet-facing endpoints, apply Laravel's `throttle` middleware alongside `clavis` to mitigate brute-force attacks.
 
 ## Tests
